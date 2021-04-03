@@ -1,51 +1,57 @@
 import React, { Component } from 'react';
+import './style.css'
 
 class App extends Component{
 
     constructor(props){
         super(props);
         this.state = { 
-            form:{
-                nome: '',
-                email: '',
-                senha: '',
-                sexo: ''
-            }
-         }
-
-         this.dadosForm = this.dadosForm.bind(this);
+            num: 0,
+            botao: 'Iniciar'
+         };
+         this.timer = null;
+         this.iniciar = this.iniciar.bind(this);
+         this.limpar = this.limpar.bind(this);
     }
 
-    dadosForm(e){
-       let form = this.state.form; 
-       form[e.target.name] = e.target.value;
-       this.setState({form: form});
+    iniciar(){
+       let state = this.state;
+
+       if(this.timer !== null){
+           clearInterval(this.timer);
+           this.timer = null;
+           state.botao = 'Iniciar';
+       }else{
+           this.timer = setInterval(()=>{
+               let state = this.state;
+               state.num += 0.1;
+               this.setState(state);
+           }, 100);
+           state.botao = 'Pausar';
+       }
+       this.setState(state);
+    }
+
+    limpar(){
+        if(this.timer !== null){
+            clearInterval(this.timer);
+            this.timer = null;
+        }
+        
+        let state = this.state;
+        state.num = 0;
+        state.botao = 'Iniciar';
+        this.setState(state);
     }
 
     render(){
         return(
-            <div>
-                <h2>Login</h2>
-                Nome:
-                <input type="text" name="nome" value={this.state.form.nome} 
-                       onChange={this.dadosForm}/><br/>
-                Email:
-                <input type="email" name="email" value={this.state.form.email} 
-                       onChange={this.dadosForm} /> <br/>
-                Senha:
-                <input type="text" name="senha" value={this.state.form.senha}
-                       onChange={this.dadosForm} /><br/>
-
-                Sexo:
-                <select name="sexo" value={this.state.form.sexo} onChange={this.dadosForm}>
-                    <option value="masculino">Masculino</option>
-                    <option value="feminino">Feminino</option>
-                </select>
-
-                <div>
-                    <h3>{this.state.form.email}</h3>
-                    <h3>{this.state.form.senha}</h3>
-                    <h3>{this.state.form.sexo}</h3>
+            <div className="container">
+                <img src={require('./assets/cronometro.png')} className="img" />
+                <a className="timer">0.0</a>
+                <div className="areaBtn">
+                    <a className="botao">Iniciar</a>
+                    <a className="botao">Limpar</a>
                 </div>
             </div>         
         );
