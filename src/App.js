@@ -17,11 +17,12 @@ class App extends Component{
     iniciar(){
        let state = this.state;
 
-       if(this.timer !== null){
+       if(this.timer != null){
            clearInterval(this.timer);
            this.timer = null;
            state.botao = 'Iniciar';
-       }else{
+       }
+       else{
            this.timer = setInterval(()=>{
                let state = this.state;
                state.num += 0.1;
@@ -33,7 +34,7 @@ class App extends Component{
     }
 
     limpar(){
-        if(this.timer !== null){
+        if(this.timer != null){
             clearInterval(this.timer);
             this.timer = null;
         }
@@ -48,10 +49,10 @@ class App extends Component{
         return(
             <div className="container">
                 <img src={require('./assets/cronometro.png')} className="img" />
-                <a className="timer">0.0</a>
+                <a className="timer">{this.state.num.toFixed(1)}</a>
                 <div className="areaBtn">
-                    <a className="botao">Iniciar</a>
-                    <a className="botao">Limpar</a>
+                    <button className="botao" onClick={this.iniciar}>{this.state.botao}</button>
+                    <button className="botao" onClick={this.limpar}>Limpar</button>
                 </div>
             </div>         
         );
